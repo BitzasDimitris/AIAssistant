@@ -28,7 +28,7 @@
   </Resources>
 
   <Applications>
-    <Application Id="App"
+    <Application Id="AIAssistantControlPanel"
       Executable="$targetnametoken$.exe"
       EntryPoint="AIAssistantControlPanel.App">
       <uap:VisualElements
@@ -40,6 +40,11 @@
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.appService" EntryPoint="AIAssistantControlPanelService.CommunicationService">
+          <uap:AppService Name="com.digicell.communicationService"/>
+        </uap:Extension>
+      </Extensions>
     </Application>
   </Applications>
 

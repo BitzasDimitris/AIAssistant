@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel.AppService;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -26,9 +29,19 @@ namespace AIAssistantControlPanel
     {
         private NavigationViewItem _lastItem;
 
+        private ServiceHandler _serviceHandler;
+
         public MainPage()
         {
             InitializeComponent();
+            _serviceHandler = new ServiceHandler();
+            _serviceHandler.OnServiceConnectionSuccess += ServiceConnectedSuccessfully;
+        }
+
+        private void ServiceConnectedSuccessfully(object sender, EventArgs e)
+        {
+            Debug.WriteLine("Service connected.");
+            ServiceToggleSwitch.IsOn = true;
         }
 
         private void ServiceToggleSwitch_Toggled(object sender, RoutedEventArgs e)

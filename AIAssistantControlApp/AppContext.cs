@@ -10,6 +10,8 @@ namespace AIAssistantControlApp
     class AppContext: ApplicationContext
     {
         private SystemTray _trayIcon;
+        private AIAssistantControlPanelService _controlPanelService;
+
         public AppContext()
         {
 
@@ -21,7 +23,33 @@ namespace AIAssistantControlApp
             _trayIcon.Animate = true;
             _trayIcon.Visible = true;
             _trayIcon.StartAnimation();
+
+            _controlPanelService = new AIAssistantControlPanelService();
+
+            _controlPanelService.OnServiceConnectionSuccess += ControlPanelServiceConnectionSuccess;
+            _controlPanelService.OnServiceConnectionError += ControlPanelServiceConnectionError;
+
+            Application.ApplicationExit += HideTrayIcon;
+            Application.ThreadException += HideTrayIcon;
+            Application.ThreadExit += HideTrayIcon;
         }
+
+        private void ControlPanelServiceConnectionSuccess(object sender, EventArgs e)
+        {
+            SetState(ServiceState.GoodSignal);
+            Task.Delay(3000).ContinueWith((a) => SetState(ServiceState.Normal));
+        }
+
+        private void ControlPanelServiceConnectionError(object sender, EventArgs e)
+        {
+            SetState(ServiceState.BadSignal);
+        }
+
+        private void HideTrayIcon(object sender, EventArgs e)
+        {
+            _trayIcon.Visible = false;
+        }
+
 
         void ShowConfig(object sender, EventArgs e)
         {
@@ -72,6 +100,7 @@ namespace AIAssistantControlApp
             stateGroupItem.DropDown = stateGroup;
 
             menuStrip.Items.Add("Configuration", null, ShowConfig);
+            menuStrip.Items.Add("Connect", null, (sender, args)=>_controlPanelService.TryToConnect());
             menuStrip.Items.Add(stateGroupItem);
             menuStrip.Items.Add("Exit", null, Exit);
             return menuStrip;

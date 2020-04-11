@@ -1,0 +1,335 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F6191577-810F-45A1-A9C6-D3E7FEE0C43D}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>AIAssistantControlApp</RootNamespace>
+    <AssemblyName>AIAssistantControlApp</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>AIAssistantControlApp.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>frame1.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppContext.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceState.cs" />
+    <Compile Include="SystemTray.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AppIcon.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="frame1.ico" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame1.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame10.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame11.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame12.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame13.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame14.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame15.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame16.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame17.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame18.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame19.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame2.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame20.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame21.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame22.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame23.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame24.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame25.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame26.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame27.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame28.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame29.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame3.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame30.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame31.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame32.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame33.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame34.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame35.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame36.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame37.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame38.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame39.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame4.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame40.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame41.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame42.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame43.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame44.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame45.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame46.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame47.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame48.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame49.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame5.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame50.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame51.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame52.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame53.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame54.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame55.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame56.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame57.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame58.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame59.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame6.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame60.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame61.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame7.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame8.png" />
+    <EmbeddedResource Include="TrayIcons\BadSignal\frame9.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame1.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame10.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame11.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame12.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame13.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame14.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame15.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame16.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame17.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame18.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame19.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame2.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame20.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame21.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame22.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame23.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame24.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame25.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame26.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame27.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame28.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame29.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame3.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame30.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame31.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame32.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame33.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame34.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame35.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame36.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame37.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame38.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame39.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame4.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame40.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame41.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame42.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame43.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame44.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame45.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame46.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame47.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame48.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame49.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame5.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame50.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame51.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame52.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame53.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame54.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame55.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame56.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame57.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame58.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame59.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame6.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame60.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame61.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame7.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame8.png" />
+    <EmbeddedResource Include="TrayIcons\GoodSignal\frame9.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame1.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame10.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame11.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame12.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame13.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame14.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame15.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame16.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame17.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame18.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame19.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame2.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame20.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame21.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame22.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame23.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame24.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame25.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame26.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame27.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame28.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame29.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame3.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame30.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame31.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame32.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame33.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame34.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame35.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame36.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame37.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame38.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame39.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame4.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame40.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame41.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame42.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame43.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame44.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame45.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame46.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame47.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame48.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame49.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame5.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame50.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame51.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame52.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame53.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame54.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame55.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame56.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame57.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame58.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame59.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame6.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame60.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame61.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame7.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame8.png" />
+    <EmbeddedResource Include="TrayIcons\Interaction\frame9.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame1.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame10.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame11.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame12.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame13.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame14.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame15.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame16.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame17.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame18.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame19.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame2.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame20.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame21.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame22.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame23.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame24.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame25.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame26.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame27.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame28.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame29.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame3.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame30.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame31.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame32.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame33.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame34.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame35.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame36.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame37.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame38.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame39.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame4.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame40.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame41.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame42.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame43.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame44.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame45.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame46.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame47.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame48.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame49.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame5.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame50.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame51.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame52.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame53.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame54.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame55.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame56.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame57.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame58.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame59.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame6.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame60.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame61.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame7.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame8.png" />
+    <EmbeddedResource Include="TrayIcons\Normal\frame9.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

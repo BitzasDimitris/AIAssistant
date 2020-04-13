@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MultimediaIOManagerService.Enums;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 
@@ -23,6 +24,7 @@ namespace MultimediaIOManagerService
         private Action<int> _callBack;
 
         private WaveFileWriter writer;
+
 
         public AudioInputManager()
         {

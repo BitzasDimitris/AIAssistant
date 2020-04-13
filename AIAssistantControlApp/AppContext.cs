@@ -1,16 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MultimediaIOManagerService.Enums;
 
 namespace AIAssistantControlApp
 {
     class AppContext: ApplicationContext
     {
         private SystemTray _trayIcon;
-        private AIAssistantControlPanelService _controlPanelService;
+        private AIACPService _controlPanelService;
+
+        private WindowsServices.MIOMService _miomService;
+
+        private MIOMServiceState _serviceState;
+
+        private ToolStripLabel _serviceStateLabel = new ToolStripLabel("State:");
 
         public AppContext()
         {
@@ -24,10 +33,30 @@ namespace AIAssistantControlApp
             _trayIcon.Visible = true;
             _trayIcon.StartAnimation();
 
-            _controlPanelService = new AIAssistantControlPanelService();
+            _controlPanelService = new AIACPService();
 
             _controlPanelService.OnServiceConnectionSuccess += ControlPanelServiceConnectionSuccess;
             _controlPanelService.OnServiceConnectionError += ControlPanelServiceConnectionError;
+
+            _miomService = new WindowsServices.MIOMService();
+            Task.Delay(1000).ContinueWith(t => _miomService.Start());
+            var timer = new Timer();
+            timer.Interval = 1000;
+            timer.Tick += (sender, args) =>
+            {
+                _serviceState = _miomService.GetState();
+                _serviceStateLabel.Text = $"State: {Enum.GetName(_serviceState.GetType(), _serviceState)}";
+                _trayIcon.ContextMenuStrip.Update();
+                Debug.WriteLine($"State: {_serviceState}");
+            };
+//            timer.Tick += async (sender, args) =>
+//            {
+//                _serviceState = await _miomService.GetStateAsync();
+//                _serviceStateLabel.Text = $"State: {Enum.GetName(_serviceState.GetType(), _serviceState)}";
+//                _trayIcon.ContextMenuStrip.Update();
+//                Debug.WriteLine($"State: {_serviceState}");
+//            };
+            timer.Start();
 
             Application.ApplicationExit += HideTrayIcon;
             Application.ThreadException += HideTrayIcon;
@@ -36,13 +65,13 @@ namespace AIAssistantControlApp
 
         private void ControlPanelServiceConnectionSuccess(object sender, EventArgs e)
         {
-            SetState(ServiceState.GoodSignal);
-            Task.Delay(3000).ContinueWith((a) => SetState(ServiceState.Normal));
+//            SetState(ServiceState.GoodSignal);
+//            Task.Delay(3000).ContinueWith((a) => SetState(ServiceState.Normal));
         }
 
         private void ControlPanelServiceConnectionError(object sender, EventArgs e)
         {
-            SetState(ServiceState.BadSignal);
+//            SetState(ServiceState.BadSignal);
         }
 
         private void HideTrayIcon(object sender, EventArgs e)
@@ -53,15 +82,7 @@ namespace AIAssistantControlApp
 
         void ShowConfig(object sender, EventArgs e)
         {
-//            // If we are already showing the window, merely focus it.
-//            if (configWindow.Visible)
-//            {
-//                configWindow.Activate();
-//            }
-//            else
-//            {
-//                configWindow.ShowDialog();
-//            }
+            _controlPanelService.Launch();
         }
 
         void SetState(object sender, EventArgs args)
@@ -84,6 +105,7 @@ namespace AIAssistantControlApp
         {
             // We must manually tidy up and remove the icon before we exit.
             // Otherwise it will be left behind until the user mouses over.
+            _miomService.Stop();
             _trayIcon.Visible = false;
             Application.Exit();
         }
@@ -98,11 +120,11 @@ namespace AIAssistantControlApp
             stateGroup.Items.Add(new ToolStripButton("GoodSignal", null, SetState) {Tag = ServiceState.GoodSignal});
             stateGroup.Items.Add(new ToolStripButton("BadSignal", null, SetState) {Tag = ServiceState.BadSignal});
             stateGroupItem.DropDown = stateGroup;
-
             menuStrip.Items.Add("Configuration", null, ShowConfig);
-            menuStrip.Items.Add("Connect", null, (sender, args)=>_controlPanelService.TryToConnect());
-            menuStrip.Items.Add(stateGroupItem);
+            //menuStrip.Items.Add(stateGroupItem);
+            menuStrip.Items.Add(_serviceStateLabel);
             menuStrip.Items.Add("Exit", null, Exit);
+            //Add status text
             return menuStrip;
         }
 

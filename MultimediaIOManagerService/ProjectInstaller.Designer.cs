@@ -42,7 +42,7 @@
             this.MultimediaIOManagerServiceInstaller.Description = "Multimedia IO Manager Service";
             this.MultimediaIOManagerServiceInstaller.DisplayName = "MIOMS";
             this.MultimediaIOManagerServiceInstaller.ServiceName = "MultimediaIOManagerService";
-            this.MultimediaIOManagerServiceInstaller.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
+            this.MultimediaIOManagerServiceInstaller.StartType = System.ServiceProcess.ServiceStartMode.Manual;
             // 
             // ProjectInstaller
             // 

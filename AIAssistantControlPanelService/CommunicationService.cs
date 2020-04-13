@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Windows.ApplicationModel.AppService;
 using Windows.ApplicationModel.Background;
 using Windows.Foundation.Collections;
@@ -9,6 +10,9 @@ namespace AIAssistantControlPanelService
     {
         private BackgroundTaskDeferral _backgroundTaskDeferral;
         private AppServiceConnection _appServiceConnection;
+
+        private AppServiceConnection _server;
+        private AppServiceConnection _client;
 
         public void Run(IBackgroundTaskInstance taskInstance)
         {
@@ -26,10 +30,81 @@ namespace AIAssistantControlPanelService
 
         private async void OnRequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
         {
-            // This function is called when the app service receives a request.
-            var tes = sender;
-            var test = args;
-            await args.Request.SendResponseAsync(new ValueSet(){ { "status", 0} });
+            if (args.Request.Message.ContainsKey("Client"))
+            {
+                if (_client == null)
+                {
+                    _client = sender;
+                }
+                OnRequestReceivedFromClient(args.Request);
+            }
+            else if (args.Request.Message.ContainsKey("Server"))
+            {
+                if (_server == null)
+                {
+                    _server = sender;
+                }
+                OnRequestReceivedFromServer(args.Request);
+            }
+            else
+            {
+                Debug.WriteLine("Not Known sender.");
+            }
+        }
+
+        private async void OnRequestReceivedFromClient(AppServiceRequest request)
+        {
+            var commands =  new ValueSet();
+            foreach (var commandKVP in request.Message)
+            {
+                if (commandKVP.Key == "Command")
+                {
+                    commands.Add(commandKVP);
+                }
+            }
+
+            if (commands.Count > 0)
+            {
+                var response = await _server?.SendMessageAsync(commands);
+                if (response != null)
+                {
+                    await request.SendResponseAsync(response.Message);
+                }
+                else
+                {
+                    await request.SendResponseAsync(new ValueSet(){ {"ServerNotFound", "ServerNotFound"}});
+                }
+            }
+            else
+            {
+                await request.SendResponseAsync(null);
+            }
+            
+        }
+
+        private async void OnRequestReceivedFromServer(AppServiceRequest request)
+        {
+            var commands =  new ValueSet();
+            foreach (var commandKVP in request.Message)
+            {
+                if (commandKVP.Key == "Command")
+                {
+                    commands.Add(commandKVP);
+                }
+            }
+
+            if (commands.Count > 0)
+            {
+                var response = await _client?.SendMessageAsync(commands);
+                if (response != null)
+                {
+                    await request.SendResponseAsync(response.Message);
+                }
+            }
+            else
+            {
+                await request.SendResponseAsync(null);
+            }
         }
 
         private void OnTaskCanceled(IBackgroundTaskInstance sender, BackgroundTaskCancellationReason reason)

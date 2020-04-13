@@ -9,14 +9,14 @@
   IgnorableNamespaces="uap3 desktop">
 
   <Identity
-    Name="fd330275-49ee-4bcd-90e1-f167c16a8987"
+    Name="67b2eb07-74c3-47df-81e1-295a9608d586"
     Publisher="CN=dimit"
     Version="1.0.0.0" />
 
   <Properties>
-    <DisplayName>AIAssistantControlApp</DisplayName>
+    <DisplayName>AIAssistantControlAppPackage</DisplayName>
     <PublisherDisplayName>Dimitrios Bitzas</PublisherDisplayName>
-    <Logo>Images\StoreLogo.png</Logo>
+    <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
   <Dependencies>
@@ -29,25 +29,22 @@
   </Resources>
 
   <Applications>
-    <Application Id="App"
-      Executable="$targetnametoken$.exe"
-      EntryPoint="$targetentrypoint$">
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="AIAssistantControlAppPackaging"
-        Description="AIAssistantControlAppPackaging"
-        BackgroundColor="transparent"
-        Square150x150Logo="Images\Square150x150Logo.png"
-        Square44x44Logo="Images\Square44x44Logo.png">
-        <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png" />
-        <uap:SplashScreen Image="Images\SplashScreen.png" />
+        DisplayName="AIAssistantControlPanel"
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png"
+        Description="AIAssistantControlApp"
+        BackgroundColor="transparent">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>
+        <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
       <Extensions>
-        <uap:Extension Category="windows.appService" EntryPoint="AIAssistantControlPanel.exe">
+        <uap:Extension Category="windows.appService">
           <uap:AppService Name="AIAssistantControlPanelService"/>
         </uap:Extension>
         <desktop:Extension Category ="windows.fullTrustProcess"
-                           Executable="AIAssistantControlApp\AIAssistantControlApp.exe"
-                           EntryPoint="windows.AIAssistantControlApp"/>
+                           Executable="AIAssistantControlApp\AIAssistantControlApp.exe"/>
       </Extensions>
     </Application>
   </Applications>

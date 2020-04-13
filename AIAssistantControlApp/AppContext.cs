@@ -10,14 +10,14 @@ using MultimediaIOManagerService.Enums;
 
 namespace AIAssistantControlApp
 {
-    class AppContext: ApplicationContext
+    public class AppContext: ApplicationContext
     {
         private SystemTray _trayIcon;
         private AIACPService _controlPanelService;
 
         private WindowsServices.MIOMService _miomService;
 
-        private MIOMServiceState _serviceState;
+        public MIOMServiceState ServiceState;
 
         private ToolStripLabel _serviceStateLabel = new ToolStripLabel("State:");
 
@@ -33,7 +33,7 @@ namespace AIAssistantControlApp
             _trayIcon.Visible = true;
             _trayIcon.StartAnimation();
 
-            _controlPanelService = new AIACPService();
+            _controlPanelService = new AIACPService(this);
 
             _controlPanelService.OnServiceConnectionSuccess += ControlPanelServiceConnectionSuccess;
             _controlPanelService.OnServiceConnectionError += ControlPanelServiceConnectionError;
@@ -42,20 +42,12 @@ namespace AIAssistantControlApp
             Task.Delay(1000).ContinueWith(t => _miomService.Start());
             var timer = new Timer();
             timer.Interval = 1000;
-            timer.Tick += (sender, args) =>
+            timer.Tick += async (sender, args) =>
             {
-                _serviceState = _miomService.GetState();
-                _serviceStateLabel.Text = $"State: {Enum.GetName(_serviceState.GetType(), _serviceState)}";
+                ServiceState = await _miomService.GetStateAsync();
+                _serviceStateLabel.Text = $"State: {Enum.GetName(ServiceState.GetType(), ServiceState)}";
                 _trayIcon.ContextMenuStrip.Update();
-                Debug.WriteLine($"State: {_serviceState}");
             };
-//            timer.Tick += async (sender, args) =>
-//            {
-//                _serviceState = await _miomService.GetStateAsync();
-//                _serviceStateLabel.Text = $"State: {Enum.GetName(_serviceState.GetType(), _serviceState)}";
-//                _trayIcon.ContextMenuStrip.Update();
-//                Debug.WriteLine($"State: {_serviceState}");
-//            };
             timer.Start();
 
             Application.ApplicationExit += HideTrayIcon;
@@ -115,10 +107,10 @@ namespace AIAssistantControlApp
             var menuStrip = new ContextMenuStrip();
             var stateGroupItem = new ToolStripMenuItem("Set State");
             var stateGroup = new ContextMenuStrip();
-            stateGroup.Items.Add(new ToolStripButton("Normal", null, SetState) {Tag = ServiceState.Normal});
-            stateGroup.Items.Add(new ToolStripButton("Interaction", null, SetState) {Tag = ServiceState.Interaction});
-            stateGroup.Items.Add(new ToolStripButton("GoodSignal", null, SetState) {Tag = ServiceState.GoodSignal});
-            stateGroup.Items.Add(new ToolStripButton("BadSignal", null, SetState) {Tag = ServiceState.BadSignal});
+            stateGroup.Items.Add(new ToolStripButton("Normal", null, SetState) {Tag = AIAssistantControlApp.ServiceState.Normal});
+            stateGroup.Items.Add(new ToolStripButton("Interaction", null, SetState) {Tag = AIAssistantControlApp.ServiceState.Interaction});
+            stateGroup.Items.Add(new ToolStripButton("GoodSignal", null, SetState) {Tag = AIAssistantControlApp.ServiceState.GoodSignal});
+            stateGroup.Items.Add(new ToolStripButton("BadSignal", null, SetState) {Tag = AIAssistantControlApp.ServiceState.BadSignal});
             stateGroupItem.DropDown = stateGroup;
             menuStrip.Items.Add("Configuration", null, ShowConfig);
             //menuStrip.Items.Add(stateGroupItem);

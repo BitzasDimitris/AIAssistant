@@ -5,6 +5,8 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.AppService;
+using Windows.ApplicationModel.Background;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -22,6 +24,13 @@ namespace AIAssistantControlPanel
     /// </summary>
     sealed partial class App : Application
     {
+        public static BackgroundTaskDeferral AppServiceDeferral = null;
+        public static AppServiceConnection Connection = null;
+        public static event EventHandler AppServiceDisconnected;
+        public static event EventHandler<AppServiceTriggerDetails> AppServiceConnected;
+        public static bool IsForeground = false;
+        public static bool ComingFromBackground = false;
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -30,6 +39,18 @@ namespace AIAssistantControlPanel
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            this.EnteredBackground += App_EnteredBackground;
+            this.LeavingBackground += App_LeavingBackground;
+        }
+
+        private void App_LeavingBackground(object sender, LeavingBackgroundEventArgs e)
+        {
+            IsForeground = true;
+        }
+
+        private void App_EnteredBackground(object sender, EnteredBackgroundEventArgs e)
+        {
+            IsForeground = false;
         }
 
         /// <summary>
@@ -50,24 +71,20 @@ namespace AIAssistantControlPanel
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    //TODO: Load state from previously suspended application
-                }
-
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
 
-            if (e.PrelaunchActivated == false)
+            if (e == null || e.PrelaunchActivated == false)
             {
                 if (rootFrame.Content == null)
                 {
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    rootFrame.Navigate(typeof(MainPage), e?.Arguments);
                 }
+
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
@@ -95,6 +112,38 @@ namespace AIAssistantControlPanel
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+
+        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
+        {
+            ComingFromBackground = true;
+            base.OnBackgroundActivated(args);
+            if (args.TaskInstance.TriggerDetails is AppServiceTriggerDetails details)
+            {
+                // only accept connections from callers in the same package
+                if (details.CallerPackageFamilyName == Package.Current.Id.FamilyName)
+                {
+                    // connection established from the fulltrust process
+                    AppServiceDeferral = args.TaskInstance.GetDeferral();
+                    args.TaskInstance.Canceled += OnTaskCanceled;
+
+                    Connection = details.AppServiceConnection;
+                    AppServiceConnected?.Invoke(this, args.TaskInstance.TriggerDetails as AppServiceTriggerDetails);
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Task canceled here means the app service client is gone
+        /// </summary>
+        private void OnTaskCanceled(IBackgroundTaskInstance sender, BackgroundTaskCancellationReason reason)
+        {
+            AppServiceDeferral?.Complete();
+            AppServiceDeferral = null;
+            Connection = null;
+            AppServiceDisconnected?.Invoke(this, null);
         }
     }
 }

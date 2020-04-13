@@ -49,6 +49,7 @@
                    RelativePanel.AlignRightWithPanel="True"
                    RelativePanel.Below="{Binding ElementName=ServiceTogglePanel}"
                    RelativePanel.Above="{Binding ElementName=LogPanel}" RelativePanel.AlignLeftWithPanel="True"/>
+            <TextBlock x:Name="testText" Text="TextBlock" TextWrapping="Wrap" RelativePanel.AlignTopWith="{Binding ElementName=ServiceTogglePanel}" RelativePanel.AlignBottomWith="{Binding ElementName=ServiceTogglePanel}" RelativePanel.LeftOf="{Binding ElementName=ServiceTogglePanel}"/>
         </RelativePanel>
     </Grid>
 

@@ -6,9 +6,12 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel;
 using Windows.ApplicationModel.AppService;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Foundation.Metadata;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -29,20 +32,78 @@ namespace AIAssistantControlPanel
     {
         private NavigationViewItem _lastItem;
 
-        private ServiceHandler _serviceHandler;
 
         public MainPage()
         {
             InitializeComponent();
-            _serviceHandler = new ServiceHandler();
-            _serviceHandler.OnServiceConnectionSuccess += ServiceConnectedSuccessfully;
         }
 
-        private void ServiceConnectedSuccessfully(object sender, EventArgs e)
+        /// <summary>
+        /// When app is loaded, kick off the desktop process
+        /// and listen to app service connection events
+        /// </summary>
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            Debug.WriteLine("Service connected.");
-            ServiceToggleSwitch.IsOn = true;
+            base.OnNavigatedTo(e);
+            if (!App.ComingFromBackground)
+            {
+                if (ApiInformation.IsApiContractPresent("Windows.ApplicationModel.FullTrustAppContract", 1, 0))
+                {
+                    App.AppServiceConnected += MainPage_AppServiceConnected;
+                    App.AppServiceDisconnected += MainPage_AppServiceDisconnected;
+                    await FullTrustProcessLauncher.LaunchFullTrustProcessForCurrentAppAsync();
+                }
+            }
+            else
+            {
+                App.ComingFromBackground = true;
+            }
+            
         }
+
+        /// <summary>
+        /// Ask user if they want to reconnect to the desktop process
+        /// </summary>
+        private async void Reconnect()
+        {
+            if (App.IsForeground)
+            {
+                await FullTrustProcessLauncher.LaunchFullTrustProcessForCurrentAppAsync();
+            }
+        }
+
+        /// <summary>
+        /// When the desktop process is connected, get ready to send/receive requests
+        /// </summary>
+        private async void MainPage_AppServiceConnected(object sender, AppServiceTriggerDetails e)
+        {
+            App.Connection.RequestReceived += AppServiceConnection_RequestReceived;
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { ServiceToggleSwitch.IsOn = false; });
+        }
+
+
+
+        /// <summary>
+        /// When the desktop process is disconnected, reconnect if needed
+        /// </summary>
+        private async void MainPage_AppServiceDisconnected(object sender, EventArgs e)
+        {
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, Reconnect);            
+        }
+
+        /// <summary>
+        /// </summary>
+        private async void AppServiceConnection_RequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
+        {
+            if (args.Request.Message.ContainsKey("Launch"))
+            {
+                App.ComingFromBackground = true;
+                InitializeComponent();
+            }
+
+            await args.Request.SendResponseAsync(new ValueSet(){{"Launched", "ready"}});
+        }
+
 
         private void ServiceToggleSwitch_Toggled(object sender, RoutedEventArgs e)
         {

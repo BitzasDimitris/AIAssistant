@@ -4,46 +4,94 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.ApplicationModel.AppService;
+using Windows.ApplicationModel.Core;
+using Windows.Foundation.Collections;
 using AIAssistantControlApp.AIAssistantControlPanelService;
+using AIAssistantControlApp.MIOMService;
 
 namespace AIAssistantControlApp
 {
     public class AIACPService
     {
-        private AppServiceConnection _appServiceConnection;
+        private AppServiceConnection _connection = null;
 
-        private AppServiceConnectionStatus _status;
+
+        private AppContext _appContext;
 
         public delegate void StatusUpdateHandler(object sender, AIACPConnectionEventArgs e);
         public event StatusUpdateHandler OnServiceConnectionSuccess;
         public event StatusUpdateHandler OnServiceConnectionError;
 
-        public AIACPService()
+        public AIACPService(AppContext appContext)
         {
-            _appServiceConnection = new AppServiceConnection();
-            _appServiceConnection.AppServiceName = "com.digicell.communicationService";
-            _appServiceConnection.PackageFamilyName = "67b2eb07-74c3-47df-81e1-295a9608d586_nwavxkhm73mjy";
+            _appContext = appContext;
+
         }
 
-
-        private async void SendServiceRequest(Action action)
+        public async void Launch()
         {
-            _status = await _appServiceConnection.OpenAsync();
-            if (_status != AppServiceConnectionStatus.Success)
+            SendRequest(new ValueSet(){{"Launch", "par"}}, null);
+//            IEnumerable<AppListEntry> appListEntries = await Package.Current.GetAppListEntriesAsync();
+//            var appEntry = appListEntries.Where(entry => entry.DisplayInfo.DisplayName.Contains("Panel"))?.First()??
+//                appListEntries.First();
+//            await appEntry.LaunchAsync();
+        }
+
+        private async Task<bool> InitializeAppServiceConnection()
+        {
+            _connection = new AppServiceConnection();
+            _connection.AppServiceName = "AIAssistantControlPanelService";
+            _connection.PackageFamilyName = Package.Current.Id.FamilyName;
+            _connection.RequestReceived += OnRequestReceived;
+            _connection.ServiceClosed += OnServiceClosed;
+
+            AppServiceConnectionStatus status = await _connection.OpenAsync();
+            if (status != AppServiceConnectionStatus.Success)
             {
-
-                OnServiceConnectionError?.Invoke(this,
-                    new AIACPConnectionEventArgs(Enum.GetName(typeof(AppServiceConnectionStatus), _status)));
-                return;
+                _connection = null;
+                return false;
             }
-            OnServiceConnectionSuccess?.Invoke(this, 
-                new AIACPConnectionEventArgs(Enum.GetName(typeof(AppServiceConnectionStatus), _status)));
+
+            return true;
         }
 
-        public void Launch()
+        private void OnServiceClosed(AppServiceConnection sender, AppServiceClosedEventArgs args)
         {
-            //_appServiceConnection?.SendMessageAsync();
+            _connection = null;
+        }
+
+
+        public async void SendRequest(ValueSet valueSet, Action<AppServiceResponse> callBack)
+        {
+            if (_connection == null)
+            {
+                var connected = await InitializeAppServiceConnection();
+                if (connected)
+                {
+                    var result = await _connection.SendMessageAsync(valueSet);
+                    callBack?.Invoke(result);
+                }
+            }
+            else
+            {
+                var result = await _connection.SendMessageAsync(valueSet);
+                callBack?.Invoke(result);
+            }
+            
+        }
+
+        private void OnRequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
+        {
+            var request = args.Request.Message;
+            var response = new ValueSet();
+            switch (request["Command"])
+            {
+                case "State":
+                    response.Add("State", _appContext.ServiceState);
+                    break;
+            }
         }
     }
 }
